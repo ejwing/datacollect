@@ -1,0 +1,39 @@
+name: Daily Update and Commit
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 台灣時間 10:00 AM 每天
+  workflow_dispatch:
+
+permissions:
+  contents: write  # 這行很重要！允許 commit/push
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true  # 保留權限才能 commit
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python script to modify file
+        run: python your_script.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add .
+          git commit -m "🤖 每日自動更新檔案 $(date -u '+%Y-%m-%d %H:%M:%S') UTC" || echo "沒有變更可提交"
+          git push
