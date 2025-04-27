@@ -2,6 +2,8 @@ import requests
 import json
 from datetime import date
 
+# 農業資料開放平台 api 專區
+# https://data.moa.gov.tw/api.aspx
 url = "https://data.moa.gov.tw/api/v1/AgriProductsTransType"  # 政府蔬果價格 API 範例
 params = {
     # "Start_time": date.today().strftime("%Y-%m-%d"),
